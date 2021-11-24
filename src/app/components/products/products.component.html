@@ -1,0 +1,48 @@
+<div *ngIf="products">
+  <div><h3>{{title}}</h3></div>
+  <div *ngFor="let p of products._embedded.products">
+    <div class="col-md-4">
+      <div class="panel panel-default heigted">
+        <div class="panel-heading">{{p.name}}</div>
+        <div class="panel-body">
+          <img class="img-thumbnail img-rounded btn" (click)="onProductDetail(p)" src="{{this.catalogueService.host+'/photoProduct/'+p.id+'?ts='+getTS()}}" alt="">
+          <div>
+            <div *ngIf="authService.isAdmin()">
+                <button (click)="onEditPPhoto(p)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                </button>
+              <p *ngIf="editPhoto==true && currentProduct==p">
+                <input type="file" (change)="onSelectedFile($event)">
+                <button class="btn btn-success" (click)="uploadPhoto()">Upload</button>
+                {{progress}}
+              </p>
+            </div>
+          </div>
+          <div>
+            {{p.description}}
+          </div>
+          <div>
+            <label>Price:{{p.currentPrice|number:'0.2'}}</label>
+          </div>
+        </div>
+        <span *ngIf="p.promotion">
+          <img src="assets/images/promo_m.png.png" alt="" height="30">
+        </span>
+        <span *ngIf="p.selected">
+          <img src="assets/images/favorite_m.jpg.png" class="img-thumbnail img-circle" height="30">
+        </span>
+        <span *ngIf="p.available">
+          <img src="assets/images/available_m.png.png" class="img-thumbnail img-circle" height="30">
+        </span>
+      </div>
+      <form #f="ngForm" (ngSubmit)="onAddProductToCart(p)">
+        <label class="controls-label">Quantité :</label>
+        <input type="number" name="quantity" ngModel style="width: 40px;" [(ngModel)]="p.quantity">
+        <button>
+          <img src="assets/images/cart%20_m.png.png">
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
