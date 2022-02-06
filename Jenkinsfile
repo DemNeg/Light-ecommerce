@@ -27,5 +27,10 @@ pipeline {
                 echo 'execution of ansible'
             }
         }
+      stage('approval') {
+            steps {
+                input 'do you want to proceed?'
+            }
+        }
     }
 }
